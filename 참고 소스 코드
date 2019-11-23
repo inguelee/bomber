@@ -104,7 +104,7 @@ int main(void)
 
 void init(void)
 {
-	system("mode con cols=56 lines=18 | title Escape Game");
+	system("mode con cols=56 lines=18 | title Escape Game"); // 라인 20 -> 18로 변경
 
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE); // 콘솔 핸들가져오기 
 	CONSOLE_CURSOR_INFO ConsoleCursor;
