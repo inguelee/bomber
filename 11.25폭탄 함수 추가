@@ -1,0 +1,55 @@
+void bomb(int _x, int _y);//bomb 함수 추가
+
+void gLoop(void) //gLoop함수 지우고 이거 쓰시면 됩니당
+{
+	int mKey;
+	memcpy(tempMap, map, sizeof(tempMap));
+	drawMap();
+	while (playing)
+	{
+		drawUI();
+		mKey = keyControl();
+		switch (mKey)
+		{
+		case UP:
+			move(0, -1);
+			break;
+		case DOWN:
+			move(0, 1);
+			break;
+		case RIGHT:
+			move(1, 0);
+			break;
+		case LEFT:
+			move(-1, 0);
+			break;
+		case BUP:
+			bomb(0, -1);
+			break;
+		case BDOWN:
+			bomb(0, 1);
+			break;
+		case BRIGHT:
+			bomb(1, 0);
+			break;
+		case BLEFT:
+			bomb(-1, 0);
+			break;
+		case ESC:
+			playing = 0;
+		}
+
+	}
+	playing = 1;
+}
+
+void bomb(int _x, int _y) //폭탄 함수 
+{
+	char mapObject = tempMap[pY + _y][pX + _x];
+	setColor(black, red);
+	if (mapObject == '0')
+	{
+		gotoxy(pX + _x, pY + _y);
+		printf("B");
+	}
+}
