@@ -39,9 +39,9 @@ char map[19][40] = { // 쉬운맵
 	{"11110111010111011111111011101011101111"},
 	{"10000100000001010000k01010000000101000"},
 	{"11110101101101011101111010110110101111"},
-	{"g000000100010000000000000010001000000G"},
-	{"111101010q010101111011101010k010101111"},
-	{"00010101111101010s00001010111110101000"},
+	{"g000000100010kkkkkk000000010001000000G"},
+	{"111101010O010101111011101010k010101111"},
+	{"0001010111110101p000001010111110101000"},
 	{"11110100000001011111111010000000101111"},
 	{"10000101111101000011000010111110100001"},
 	{"10110000010000011011011000001000001101"},
@@ -273,7 +273,7 @@ void drawMap(void)
 				setColor(white, white);
 				printf("#");
 			}
-			else if (temp == 's')
+			else if (temp == 'p')
 			{
 				//플레이어 X,Y 위치 저장
 				pX = w;
@@ -281,7 +281,7 @@ void drawMap(void)
 				setColor(cyan, black);
 				printf("@");
 			}
-			else if (temp == 'q')
+			else if (temp == 'O')
 			{
 				setColor(lightgreen, black);
 				printf("O");
@@ -293,8 +293,8 @@ void drawMap(void)
 			}
 			else if (temp == 'l')
 			{
-				setColor(brown, black);
-				printf("T");
+				setColor(white, white);
+				printf("#");
 			}
 			else if (temp == 'm')
 			{
@@ -397,16 +397,19 @@ void move(int _x, int _y)
 		if (pKey > 0)
 		{
 			pKey--;
-			tempMap[pY + _y][pX + _x] = '0';
+			tempMap[9][6] = '0';
 			setColor(white, black);
 			gotoxy(pX + _x, pY + _y);
 			printf(" ");
 		}
 
 	}
-	else if (mapObject == 'q')
+	else if (mapObject == 'O')
 	{
 		playing = 0;
+		gotoxy(39, 16);
+		printf("! 탈출을 축하드립니다 !");
+		Sleep(3000);
 	}
 
 	else if (mapObject == 'm')
