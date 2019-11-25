@@ -121,7 +121,7 @@ int main(void)
 
 void init(void)
 {
-	system("mode con cols=64 lines=32 | title Bomber Man");
+	system("mode con cols=63 lines=20 | title Bomber Man");
 
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE); // 콘솔 핸들가져오기 
 	CONSOLE_CURSOR_INFO ConsoleCursor;
@@ -419,9 +419,9 @@ void move(int _x, int _y)
 		printf(" ");
 
 		setColor(cyan, black);
-		gotoxy(pX + _x + 17, pY + _y);
+		gotoxy(pX + _x + 36, pY + _y);
 		printf("@");
-		pX += _x + 17;
+		pX += _x + 36;
 		pY += _y;
 	}
 	else if (mapObject == 'G')
@@ -430,9 +430,9 @@ void move(int _x, int _y)
 		printf(" ");
 
 		setColor(cyan, black);
-		gotoxy(pX + _x - 17, pY + _y);
+		gotoxy(pX + _x - 36, pY + _y);
 		printf("@");
-		pX += _x - 17;
+		pX += _x - 36;
 		pY += _y;
 	}
 }
@@ -447,7 +447,7 @@ void drawUI(void)
 	printf("플레이어 위치:(%02d,%02d)", pX, pY);
 
 	setColor(yellow, black);
-	gotoxy(34, 22);
+	gotoxy(42, 6);
 	printf("열쇠: %d개", pKey);
 
 	setColor(white, black);
