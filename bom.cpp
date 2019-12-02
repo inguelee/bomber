@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <windows.h>
-#include<time.h>
+#include <time.h>
 
 #define UP 0
 #define DOWN 1
@@ -32,7 +32,7 @@ enum {
 //char tempMap[19][40];
 char map[19][40] = {
 	{"11111111111111111111111111111111111111"},
-	{"100000000000000000110000000000000000k1"},
+	{"10000000000000000011a000000000000000k1"},
 	{"101101011k1101011011011010111110101101"},
 	{"10000100010001000011000010001000100001"},
 	{"11110111010111011111111011101011101111"},
@@ -43,15 +43,15 @@ char map[19][40] = {
 	{"0001010111110101p000001010111110101000"},
 	{"11110100000001011111111010000000101111"},
 	{"10000101111101000011000010111110100001"},
-	{"10110000010000011011011000001000001101"},
+	{"1011c000010000011011011000001000001101"},
 	{"10010111010111010011001011101011101001"},
 	{"11010001k00100010111101000100010001011"},
-	{"1000010001000100001100001000100k100001"},
+	{"10000100010001000011000b1000100k100001"},
 	{"10101111000111101011010111100011110101"},
 	{"10000000010000000011000000001000000001"},
 	{"11111111111111111111111111111111111111"},
 
-};// 0 : í†µë¡œ, 1 : ë²½, k : ì—´ì‡ (ì•„ì´í…œ), p : í”Œë ˆì´ì–´, O : íƒˆì¶œêµ¬ ã…£ : ì ê¸´ ë¬¸ t : ì•„ì´í…œ
+};// 0 : Åë·Î, 1 : º®, k : ¿­¼è(¾ÆÀÌÅÛ), p : ÇÃ·¹ÀÌ¾î, O : Å»Ãâ±¸ ¤Ó : Àá±ä ¹® t : ¾ÆÀÌÅÛ
 int keyControl(void);
 void titleDraw(void);
 int menuDraw(void);
@@ -61,8 +61,8 @@ void infoDraw(void);
 void init();
 void gotoxy(int, int);
 void setColor(int, int);
-void drawMap(int* pX, int* pY, char(*tMap)[40]);
-int move(char(*tMap)[40], int* pX, int* pY, int _x, int _y, int* pKey, int* heart);
+void drawMap(int* pX, int* pY, int* mX, int* mY, int* aX, int* aY, int* bX, int* bY, int* cX, int* cY, char(*tMap)[40]);
+int move(char(*tMap)[40], int* pX, int* pY, int*mX, int*mY, int* aX, int* aY, int* bX, int* bY, int* cX, int* cY, int _x, int _y, int* pKey, int* heart);
 void gLoop(void);
 void drawUI(int pX, int pY, int pKey, int heart);
 void endDraw();
@@ -99,7 +99,7 @@ int main(void)
 		system("cls");
 	}
 	gotoxy(20, 18);
-	printf("<ê²Œì„ì´ ì¢…ë£Œë˜ì—ˆìŠµë‹ˆë‹¤>");
+	printf("<°ÔÀÓÀÌ Á¾·áµÇ¾ú½À´Ï´Ù>");
 	_getch();
 
 	return 0;
@@ -137,11 +137,11 @@ int menuDraw(void)
 	int x = 27;
 	int y = 14;
 	gotoxy(x - 2, y);
-	printf("> ê²Œì„ì‹œì‘");
+	printf("> °ÔÀÓ½ÃÀÛ");
 	gotoxy(x, y + 1);
-	printf("ê²Œì„ì„¤ëª…");
+	printf("°ÔÀÓ¼³¸í");
 	gotoxy(x, y + 2);
-	printf("  ì¢…ë£Œ  ");
+	printf("  Á¾·á  ");
 	while (1) {
 		int n = keyControl();
 		switch (n) {
@@ -210,14 +210,14 @@ int keyControl()
 void gLoop(void)
 {
 	int mKey;
-	int pX, pY;
+	int pX, pY,mX, mY,aX,aY, bX,bY, cX, cY ;
 	int pKey = 0;
 	int playing = 1;
 	int heart = 2;
 	char tempMap[19][40];
 
 	memcpy(tempMap, map, sizeof(tempMap));
-	drawMap(&pX, &pY, tempMap);
+	drawMap(&pX, &pY, &mX, &mY,&aX,&aY, &bX, &bY, &cX, &cY, tempMap);
 	while (playing)
 	{
 		drawUI(pX, pY, pKey, heart);
@@ -225,16 +225,16 @@ void gLoop(void)
 		switch (mKey)
 		{
 		case UP:
-			playing = move(tempMap, &pX, &pY, 0, -1, &pKey, &heart);
+			playing = move(tempMap, &pX, &pY, &mX, &mY, &aX, &aY, &bX, &bY, &cX, &cY, 0, -1, &pKey, &heart);
 			break;
 		case DOWN:
-			playing = move(tempMap, &pX, &pY, 0, 1, &pKey, &heart);
+			playing = move(tempMap, &pX, &pY, &mX, &mY, &aX, &aY, &bX, &bY, &cX, &cY, 0, 1, &pKey, &heart);
 			break;
 		case RIGHT:
-			playing = move(tempMap, &pX, &pY, 1, 0, &pKey, &heart);
+			playing = move(tempMap, &pX, &pY, &mX, &mY, &aX, &aY, &bX, &bY, &cX, &cY, 1, 0, &pKey, &heart);
 			break;
 		case LEFT:
-			playing = move(tempMap, &pX, &pY, -1, 0, &pKey, &heart);
+			playing = move(tempMap, &pX, &pY, &mX, &mY, &aX, &aY, &bX, &bY, &cX, &cY, -1, 0, &pKey, &heart);
 			break;
 		case SUBMIT:
 			playing = 0;
@@ -244,7 +244,7 @@ void gLoop(void)
 	//playing = 1;
 }
 
-void drawMap(int* pX, int* pY, char(*tMap)[40])
+void drawMap(int* pX, int* pY, int*mX, int*mY, int* aX, int* aY, int* bX, int* bY, int* cX, int* cY, char(*tMap)[40])
 {
 	char temp;
 	system("cls");
@@ -288,6 +288,8 @@ void drawMap(int* pX, int* pY, char(*tMap)[40])
 			}
 			else if (temp == 'm')
 			{
+				*mX = w;
+				*mY = h;
 				setColor(lightred, black);
 				printf("M");
 			}
@@ -296,6 +298,29 @@ void drawMap(int* pX, int* pY, char(*tMap)[40])
 				setColor(cyan, black);
 				printf("?");
 			}
+			else if (temp == 'a')
+			{
+				*aX = w;
+				*aY = h;
+				setColor(lightred, black);
+				printf("M");
+			}
+			else if (temp == 'b')
+			{
+				*bX = w;
+				*bY = h;
+				setColor(lightred, black);
+				printf("M");
+			}
+			else if (temp == 'c')
+			{
+				*cX = w;
+				*cY = h;
+				setColor(lightred, black);
+				printf("M");
+			}
+
+
 		}
 		printf("\n");
 	}
@@ -303,7 +328,7 @@ void drawMap(int* pX, int* pY, char(*tMap)[40])
 }
 void setColor(int forground, int background)
 {
-	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE); // ì½˜ì†” í•¸ë“¤ê°€ì ¸ì˜¤ê¸° 
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE); // ÄÜ¼Ö ÇÚµé°¡Á®¿À±â 
 	int code = forground + background * 16;
 	SetConsoleTextAttribute(consoleHandle, code);
 }
@@ -313,37 +338,84 @@ void drawUI(int pX, int pY, int pKey, int heart)
 	setColor(white, black);
 
 	gotoxy(40, 4);
-	printf("í”Œë ˆì´ì–´ ìœ„ì¹˜:(%02d,%02d)", pX, pY);
+	printf("ÇÃ·¹ÀÌ¾î À§Ä¡:(%02d,%02d)", pX, pY);
 
 	setColor(yellow, black);
 	gotoxy(45, 8);
-	printf("ì—´ì‡ : %d/6ê°œ", pKey);
+	printf("¿­¼è: %d/6°³", pKey);
 
 	setColor(lightred, black);
 	gotoxy(45, 12);
-	printf("ëª©ìˆ¨: %d/2ê°œ", heart);
+	printf("¸ñ¼û: %d/2°³", heart);
 
 	setColor(white, black);
 }
 
-int move(char(*tMap)[40], int* pX, int* pY, int _x, int _y, int* pKey, int* heart)
+int move(char(*tMap)[40], int* pX, int* pY, int*mX,int *mY, int* aX, int* aY, int* bX, int* bY, int* cX, int* cY, int _x, int _y, int* pKey, int* heart)
 {
 	int playflag = 1;
 	char mapObject = tMap[*pY + _y][*pX + _x];
-	setColor(white, black);
+	char mapObject1 = tMap[*mY + _y][*mX + _x];
+	char mapObject2 = tMap[*aY + _y][*aX + _x];
+	char mapObject3 = tMap[*bY + _y][*bX + _x];
+	char mapObject4 = tMap[*cY + _y][*cX + _x];
 
+	setColor(white, black);
+	 
 	if (mapObject == '0')
 	{
+
 		gotoxy(*pX, *pY);
 		printf(" ");
-
 		setColor(lightcyan, black);
 		gotoxy(*pX + _x, *pY + _y);
 		printf("@");
 		*pX += _x;
 		*pY += _y;
 	}
-	if (mapObject == 'm')
+	if (mapObject1 == '0')
+	{
+		gotoxy(*mX, *mY);
+		printf(" ");
+		setColor(lightred, black);
+		gotoxy(*mX + _x, *mY + _y);
+		printf("M");
+		*mX += _x;
+		*mY += _y;
+	}
+	if (mapObject2 == '0')
+	{
+		gotoxy(*aX, *aY);
+		printf(" ");
+		setColor(lightred, black);
+		gotoxy(*aX + _x, *aY + _y);
+		printf("M");
+		*aX += _x;
+		*aY += _y;
+	}
+	if (mapObject3 == '0')
+	{
+		gotoxy(*bX, *bY);
+		printf(" ");
+		setColor(lightred, black);
+		gotoxy(*bX + _x, *bY + _y);
+		printf("M");
+		*bX += _x;
+		*bY += _y;
+	}
+	if (mapObject4 == '0')
+	{
+		gotoxy(*cX, *cY);
+		printf(" ");
+		setColor(lightred, black);
+		gotoxy(*cX + _x, *cY + _y);
+		printf("M");
+		*cX += _x;
+		*cY += _y;
+	}
+
+
+	if (mapObject == 'm' || mapObject == 'a' || mapObject == 'b' || mapObject == 'c')
 	{
 		*heart -= 1;
 		if (*heart == 0)
@@ -367,7 +439,7 @@ int move(char(*tMap)[40], int* pX, int* pY, int _x, int _y, int* pKey, int* hear
 
 			setColor(lightgreen, black);
 			gotoxy(41, 10);
-			printf("íƒˆì¶œêµ¬ê°€ ì—´ë ¸ìŠµë‹ˆë‹¤");
+			printf("Å»Ãâ±¸°¡ ¿­·È½À´Ï´Ù");
 		}
 	}
 	else if (mapObject == 'O')
@@ -375,7 +447,7 @@ int move(char(*tMap)[40], int* pX, int* pY, int _x, int _y, int* pKey, int* hear
 		playflag = 0;
 		setColor(yellow, black);
 		gotoxy(39, 16);
-		printf("! íƒˆì¶œì„ ì¶•í•˜ë“œë¦½ë‹ˆë‹¤ !");
+		printf("! Å»ÃâÀ» ÃàÇÏµå¸³´Ï´Ù !");
 		Sleep(5000);
 	}
 	else if (mapObject == 't')
@@ -394,15 +466,15 @@ void infoDraw(void)
 {
 	system("cls");
 	printf("\n\n");
-	printf("                        [ ê²Œì„ì„¤ëª… ]\n\n");
-	printf("             ëª¬ìŠ¤í„°ë“¤ì„ í”¼í•˜ê±°ë‚˜ í­íƒ„ìœ¼ë¡œ ë¬¼ë¦¬ì³\n");
-	printf("                     ì—´ì‡ ë¥¼ ì–»ì–´ íƒˆì¶œí•´ë¼\n\n");
-	printf("                        [ ì¡°ì‘ë²• ]\n\n");
-	printf("                     ì´ë™: W, A, S, D\n\n");
-	printf("                     í­íƒ„ì„¤ì¹˜: I, J, K, L\n\n");
-	printf("                     ì„ íƒ: ìŠ¤í˜ì´ìŠ¤ë°”\n\n\n");
-	printf("             ê°œë°œì: 6ì¡°(ê°•ì¬ìœ¤, ì´ìœ ì§„, ì´ì¸êµ¬)\n\n");
-	printf("         ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ ëˆ„ë¥´ë©´ ë©”ì¸í™”ë©´ìœ¼ë¡œ ì´ë™í•©ë‹ˆë‹¤.");
+	printf("                        [ °ÔÀÓ¼³¸í ]\n\n");
+	printf("             ¸ó½ºÅÍµéÀ» ÇÇÇÏ°Å³ª ÆøÅºÀ¸·Î ¹°¸®ÃÄ\n");
+	printf("                     ¿­¼è¸¦ ¾ò¾î Å»ÃâÇØ¶ó\n\n");
+	printf("                        [ Á¶ÀÛ¹ı ]\n\n");
+	printf("                     ÀÌµ¿: W, A, S, D\n\n");
+	printf("                     ÆøÅº¼³Ä¡: I, J, K, L\n\n");
+	printf("                     ¼±ÅÃ: ½ºÆäÀÌ½º¹Ù\n\n\n");
+	printf("             °³¹ßÀÚ: 6Á¶(°­ÀçÀ±, ÀÌÀ¯Áø, ÀÌÀÎ±¸)\n\n");
+	printf("         ½ºÆäÀÌ½º¹Ù¸¦ ´©¸£¸é ¸ŞÀÎÈ­¸éÀ¸·Î ÀÌµ¿ÇÕ´Ï´Ù.");
 
 	while (1) {
 		if (keyControl() == SUBMIT) {
@@ -414,12 +486,13 @@ void infoDraw(void)
 void endDraw()
 {
 	system("cls");
+	setColor(white, black);
 	printf("\n\n\n\n\n");
 	printf("               *             *             *\n");
 	printf("                *             *             *\n");
 	printf("               ###           ###           ###\n");
 	printf("              #####         #####         #####\n");
 	printf("               ###           ###           ###\n\n\n");
-	printf("                        - íƒˆì¶œ ì‹¤íŒ¨ -\n\n\n");
-	printf("                  ! ë‹¤ì‹œ í•œ ë²ˆ ë„ì „í•˜ì„¸ìš” !");
+	printf("                        - Å»Ãâ ½ÇÆĞ -\n\n\n");
+	printf("                  ! ´Ù½Ã ÇÑ ¹ø µµÀüÇÏ¼¼¿ä !");
 }
