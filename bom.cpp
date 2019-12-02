@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <windows.h>
+#include<time.h>
 
 #define UP 0
 #define DOWN 1
@@ -28,21 +29,21 @@ enum {
 	white
 };
 
-char tempMap[19][40];
+//char tempMap[19][40];
 char map[19][40] = {
 	{"11111111111111111111111111111111111111"},
-	{"1m0000000000000000110000000000000m00k1"},
+	{"100000000000000000110000000000000000k1"},
 	{"101101011k1101011011011010111110101101"},
 	{"10000100010001000011000010001000100001"},
 	{"11110111010111011111111011101011101111"},
-	{"1m000100000001010000k0101m000000101000"},
+	{"000101m0000001010000k01010000000101000"},
 	{"111101011l1101011101111010110110101111"},
-	{"100000010001m0000000000000100010000001"},
+	{"1t000001000100000000000000100010000001"},
 	{"111101010O010101111011101010k010101111"},
 	{"0001010111110101p000001010111110101000"},
 	{"11110100000001011111111010000000101111"},
 	{"10000101111101000011000010111110100001"},
-	{"1011m00001m000011011011m00001m00001101"},
+	{"10110000010000011011011000001000001101"},
 	{"10010111010111010011001011101011101001"},
 	{"11010001k00100010111101000100010001011"},
 	{"1000010001000100001100001000100k100001"},
@@ -50,24 +51,29 @@ char map[19][40] = {
 	{"10000000010000000011000000001000000001"},
 	{"11111111111111111111111111111111111111"},
 
-};// 0 : 통로, 1 : 벽, k : 열쇠(아이템), p : 플레이어, O : 탈출구 ㅣ : 잠긴 문 r :우로 이동 몬스터
+};// 0 : 통로, 1 : 벽, k : 열쇠(아이템), p : 플레이어, O : 탈출구 ㅣ : 잠긴 문 t : 아이템
+int keyControl(void);
+void titleDraw(void);
+int menuDraw(void);
+
+void infoDraw(void);
 
 void init();
-void titleDraw();
-int menuDraw();
 void gotoxy(int, int);
-int keyControl();
-void gLoop();
-void drawMap(int*, int*);
 void setColor(int, int);
-void drawUI(int, int);
-void move(int*, int*, int, int);
-void infoDraw();
+void drawMap(int* pX, int* pY, char(*tMap)[40]);
+int move(char(*tMap)[40], int* pX, int* pY, int _x, int _y, int* pKey, int* heart);
+void gLoop(void);
+void drawUI(int pX, int pY, int pKey, int heart);
 void endDraw();
 
-int pKey = 0;
-int playing = 1;
+//int pKey = 0;
+//int playing = 1;
 
+typedef struct Monster
+{
+
+};
 int main(void)
 {
 	int menuCode;
@@ -82,7 +88,6 @@ int main(void)
 
 		if (menuCode == 0)
 		{
-			pKey = 0;
 			gLoop();
 		}
 		else if (menuCode == 1)
@@ -114,7 +119,7 @@ void init()
 	SetConsoleCursorInfo(consoleHandle, &ConsoleCursor);
 }
 
-void titleDraw()
+void titleDraw(void)
 {
 	printf("\n");
 	printf("                   *                                  \n");
@@ -130,7 +135,7 @@ void titleDraw()
 	printf("                   @  @  @   @     @   @  @@ \n");
 }
 
-int menuDraw()
+int menuDraw(void)
 {
 	int x = 27;
 	int y = 14;
@@ -205,40 +210,44 @@ int keyControl()
 	}
 }
 
-void gLoop()
+void gLoop(void)
 {
 	int mKey;
 	int pX, pY;
+	int pKey = 0;
+	int playing = 1;
+	int heart = 2;
+	char tempMap[19][40];
 
 	memcpy(tempMap, map, sizeof(tempMap));
-	drawMap(&pX, &pY);
+	drawMap(&pX, &pY, tempMap);
 	while (playing)
 	{
-		drawUI(pX, pY);
+		drawUI(pX, pY, pKey, heart);
 		mKey = keyControl();
 		switch (mKey)
 		{
 		case UP:
-			move(&pX, &pY, 0, -1);
+			playing = move(tempMap, &pX, &pY, 0, -1, &pKey, &heart);
 			break;
 		case DOWN:
-			move(&pX, &pY, 0, 1);
+			playing = move(tempMap, &pX, &pY, 0, 1, &pKey, &heart);
 			break;
 		case RIGHT:
-			move(&pX, &pY, 1, 0);
+			playing = move(tempMap, &pX, &pY, 1, 0, &pKey, &heart);
 			break;
 		case LEFT:
-			move(&pX, &pY, -1, 0);
+			playing = move(tempMap, &pX, &pY, -1, 0, &pKey, &heart);
 			break;
 		case SUBMIT:
 			playing = 0;
 		}
 
 	}
-	playing = 1;
+	//playing = 1;
 }
 
-void drawMap(int* pX, int* pY)
+void drawMap(int* pX, int* pY, char(*tMap)[40])
 {
 	char temp;
 	system("cls");
@@ -247,7 +256,7 @@ void drawMap(int* pX, int* pY)
 	{
 		for (w = 0; w < 40; w++)
 		{
-			temp = tempMap[h][w];
+			temp = tMap[h][w];
 			if (temp == '0')
 			{
 				setColor(black, black);
@@ -285,6 +294,11 @@ void drawMap(int* pX, int* pY)
 				setColor(lightred, black);
 				printf("M");
 			}
+			else if (temp == 't')
+			{
+				setColor(cyan, black);
+				printf("?");
+			}
 		}
 		printf("\n");
 	}
@@ -297,7 +311,7 @@ void setColor(int forground, int background)
 	SetConsoleTextAttribute(consoleHandle, code);
 }
 
-void drawUI(int pX, int pY)
+void drawUI(int pX, int pY, int pKey, int heart)
 {
 	setColor(white, black);
 
@@ -306,13 +320,19 @@ void drawUI(int pX, int pY)
 
 	setColor(yellow, black);
 	gotoxy(45, 8);
-	printf("열쇠: %d개", pKey);
+	printf("열쇠: %d/6개", pKey);
+
+	setColor(lightred, black);
+	gotoxy(45, 12);
+	printf("목숨: %d/2개", heart);
+
 	setColor(white, black);
 }
 
-void move(int* pX, int* pY, int _x, int _y)
+int move(char(*tMap)[40], int* pX, int* pY, int _x, int _y, int* pKey, int* heart)
 {
-	char mapObject = tempMap[*pY + _y][*pX + _x];
+	int playflag = 1;
+	char mapObject = tMap[*pY + _y][*pX + _x];
 	setColor(white, black);
 
 	if (mapObject == '0')
@@ -328,19 +348,23 @@ void move(int* pX, int* pY, int _x, int _y)
 	}
 	if (mapObject == 'm')
 	{
-		playing = 0;
-		endDraw();
-		Sleep(5000);
+		*heart -= 1;
+		if (*heart == 0)
+		{
+			playflag = 0;
+			endDraw();
+			Sleep(5000);
+		}
 	}
 	else if (mapObject == 'k')
 	{
-		pKey += 1;
-		tempMap[*pY + _y][*pX + _x] = '0';
+		*pKey += 1;
+		tMap[*pY + _y][*pX + _x] = '0';
 		gotoxy(*pX + _x, *pY + _y);
 		printf(" ");
-		if (pKey == 6)
+		if (*pKey == 6)
 		{
-			tempMap[6][9] = '0';
+			tMap[6][9] = '0';
 			gotoxy(9, 6);
 			printf(" ");
 
@@ -351,15 +375,24 @@ void move(int* pX, int* pY, int _x, int _y)
 	}
 	else if (mapObject == 'O')
 	{
-		playing = 0;
+		playflag = 0;
 		setColor(yellow, black);
 		gotoxy(39, 16);
 		printf("! 탈출을 축하드립니다 !");
 		Sleep(5000);
 	}
+	else if (mapObject == 't')
+	{
+		*heart += rand() % 2;
+		tMap[*pY + _y][*pX + _x] = '0';
+		gotoxy(*pX + _x, *pY + _y);
+		printf(" ");
+	}
+
+	return playflag;
 }
 
-void infoDraw()
+void infoDraw(void)
 {
 	system("cls");
 	printf("\n\n");
