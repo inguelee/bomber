@@ -51,7 +51,7 @@ char map[19][40] = {
 	{"10000000010000000011000000001000000001"},
 	{"11111111111111111111111111111111111111"},
 
-};// 0 : Åë·Î, 1 : º®, k : ¿­¼è(¾ÆÀÌÅÛ), p : ÇÃ·¹ÀÌ¾î, O : Å»Ãâ±¸ ¤Ó : Àá±ä ¹® t : ¾ÆÀÌÅÛ
+};// 0 : í†µë¡œ, 1 : ë²½, k : ì—´ì‡ (ì•„ì´í…œ), p : í”Œë ˆì´ì–´, O : íƒˆì¶œêµ¬ ã…£ : ì ê¸´ ë¬¸ t : ì•„ì´í…œ
 int keyControl(void);
 void titleDraw(void);
 int menuDraw(void);
@@ -70,10 +70,7 @@ void endDraw();
 //int pKey = 0;
 //int playing = 1;
 
-typedef struct Monster
-{
 
-};
 int main(void)
 {
 	int menuCode;
@@ -102,7 +99,7 @@ int main(void)
 		system("cls");
 	}
 	gotoxy(20, 18);
-	printf("<°ÔÀÓÀÌ Á¾·áµÇ¾ú½À´Ï´Ù>");
+	printf("<ê²Œì„ì´ ì¢…ë£Œë˜ì—ˆìŠµë‹ˆë‹¤>");
 	_getch();
 
 	return 0;
@@ -140,11 +137,11 @@ int menuDraw(void)
 	int x = 27;
 	int y = 14;
 	gotoxy(x - 2, y);
-	printf("> °ÔÀÓ½ÃÀÛ");
+	printf("> ê²Œì„ì‹œì‘");
 	gotoxy(x, y + 1);
-	printf("°ÔÀÓ¼³¸í");
+	printf("ê²Œì„ì„¤ëª…");
 	gotoxy(x, y + 2);
-	printf("  Á¾·á  ");
+	printf("  ì¢…ë£Œ  ");
 	while (1) {
 		int n = keyControl();
 		switch (n) {
@@ -306,7 +303,7 @@ void drawMap(int* pX, int* pY, char(*tMap)[40])
 }
 void setColor(int forground, int background)
 {
-	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE); // ÄÜ¼Ö ÇÚµé°¡Á®¿À±â 
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE); // ì½˜ì†” í•¸ë“¤ê°€ì ¸ì˜¤ê¸° 
 	int code = forground + background * 16;
 	SetConsoleTextAttribute(consoleHandle, code);
 }
@@ -316,15 +313,15 @@ void drawUI(int pX, int pY, int pKey, int heart)
 	setColor(white, black);
 
 	gotoxy(40, 4);
-	printf("ÇÃ·¹ÀÌ¾î À§Ä¡:(%02d,%02d)", pX, pY);
+	printf("í”Œë ˆì´ì–´ ìœ„ì¹˜:(%02d,%02d)", pX, pY);
 
 	setColor(yellow, black);
 	gotoxy(45, 8);
-	printf("¿­¼è: %d/6°³", pKey);
+	printf("ì—´ì‡ : %d/6ê°œ", pKey);
 
 	setColor(lightred, black);
 	gotoxy(45, 12);
-	printf("¸ñ¼û: %d/2°³", heart);
+	printf("ëª©ìˆ¨: %d/2ê°œ", heart);
 
 	setColor(white, black);
 }
@@ -370,7 +367,7 @@ int move(char(*tMap)[40], int* pX, int* pY, int _x, int _y, int* pKey, int* hear
 
 			setColor(lightgreen, black);
 			gotoxy(41, 10);
-			printf("Å»Ãâ±¸°¡ ¿­·È½À´Ï´Ù");
+			printf("íƒˆì¶œêµ¬ê°€ ì—´ë ¸ìŠµë‹ˆë‹¤");
 		}
 	}
 	else if (mapObject == 'O')
@@ -378,7 +375,7 @@ int move(char(*tMap)[40], int* pX, int* pY, int _x, int _y, int* pKey, int* hear
 		playflag = 0;
 		setColor(yellow, black);
 		gotoxy(39, 16);
-		printf("! Å»ÃâÀ» ÃàÇÏµå¸³´Ï´Ù !");
+		printf("! íƒˆì¶œì„ ì¶•í•˜ë“œë¦½ë‹ˆë‹¤ !");
 		Sleep(5000);
 	}
 	else if (mapObject == 't')
@@ -396,15 +393,15 @@ void infoDraw(void)
 {
 	system("cls");
 	printf("\n\n");
-	printf("                        [ °ÔÀÓ¼³¸í ]\n\n");
-	printf("             ¸ó½ºÅÍµéÀ» ÇÇÇÏ°Å³ª ÆøÅºÀ¸·Î ¹°¸®ÃÄ\n");
-	printf("                     ¿­¼è¸¦ ¾ò¾î Å»ÃâÇØ¶ó\n\n");
-	printf("                        [ Á¶ÀÛ¹ı ]\n\n");
-	printf("                     ÀÌµ¿: W, A, S, D\n\n");
-	printf("                     ÆøÅº¼³Ä¡: I, J, K, L\n\n");
-	printf("                     ¼±ÅÃ: ½ºÆäÀÌ½º¹Ù\n\n\n");
-	printf("             °³¹ßÀÚ: 6Á¶(°­ÀçÀ±, ÀÌÀ¯Áø, ÀÌÀÎ±¸)\n\n");
-	printf("         ½ºÆäÀÌ½º¹Ù¸¦ ´©¸£¸é ¸ŞÀÎÈ­¸éÀ¸·Î ÀÌµ¿ÇÕ´Ï´Ù.");
+	printf("                        [ ê²Œì„ì„¤ëª… ]\n\n");
+	printf("             ëª¬ìŠ¤í„°ë“¤ì„ í”¼í•˜ê±°ë‚˜ í­íƒ„ìœ¼ë¡œ ë¬¼ë¦¬ì³\n");
+	printf("                     ì—´ì‡ ë¥¼ ì–»ì–´ íƒˆì¶œí•´ë¼\n\n");
+	printf("                        [ ì¡°ì‘ë²• ]\n\n");
+	printf("                     ì´ë™: W, A, S, D\n\n");
+	printf("                     í­íƒ„ì„¤ì¹˜: I, J, K, L\n\n");
+	printf("                     ì„ íƒ: ìŠ¤í˜ì´ìŠ¤ë°”\n\n\n");
+	printf("             ê°œë°œì: 6ì¡°(ê°•ì¬ìœ¤, ì´ìœ ì§„, ì´ì¸êµ¬)\n\n");
+	printf("         ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ ëˆ„ë¥´ë©´ ë©”ì¸í™”ë©´ìœ¼ë¡œ ì´ë™í•©ë‹ˆë‹¤.");
 
 	while (1) {
 		if (keyControl() == SUBMIT) {
@@ -422,6 +419,6 @@ void endDraw()
 	printf("               ###           ###           ###\n");
 	printf("              #####         #####         #####\n");
 	printf("               ###           ###           ###\n\n\n");
-	printf("                        - Å»Ãâ ½ÇÆĞ -\n\n\n");
-	printf("                  ! ´Ù½Ã ÇÑ ¹ø µµÀüÇÏ¼¼¿ä !");
+	printf("                        - íƒˆì¶œ ì‹¤íŒ¨ -\n\n\n");
+	printf("                  ! ë‹¤ì‹œ í•œ ë²ˆ ë„ì „í•˜ì„¸ìš” !");
 }
