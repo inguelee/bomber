@@ -380,6 +380,7 @@ int move(char(*tMap)[40], int* pX, int* pY, int _x, int _y, int* pKey, int* hear
 	}
 	else if (mapObject == 't')
 	{
+		srand(time(NULL));
 		*heart += rand() % 2;
 		tMap[*pY + _y][*pX + _x] = '0';
 		gotoxy(*pX + _x, *pY + _y);
