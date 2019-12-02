@@ -364,7 +364,7 @@ int move(char(*tMap)[40], int* pX, int* pY, int*mX,int *mY, int* aX, int* aY, in
 	 
 	if (mapObject == '0')
 	{
-
+		tMap[*pY][*pX] = '0';
 		gotoxy(*pX, *pY);
 		printf(" ");
 		setColor(lightcyan, black);
@@ -375,9 +375,11 @@ int move(char(*tMap)[40], int* pX, int* pY, int*mX,int *mY, int* aX, int* aY, in
 	}
 	if (mapObject1 == '0')
 	{
+		tMap[*mY][*mX] = '0';
 		gotoxy(*mX, *mY);
 		printf(" ");
 		setColor(lightred, black);
+		tMap[*mY + _y][*mX + _x] = 'm';
 		gotoxy(*mX + _x, *mY + _y);
 		printf("M");
 		*mX += _x;
@@ -385,9 +387,11 @@ int move(char(*tMap)[40], int* pX, int* pY, int*mX,int *mY, int* aX, int* aY, in
 	}
 	if (mapObject2 == '0')
 	{
+		tMap[*aY][*aX] = '0';
 		gotoxy(*aX, *aY);
 		printf(" ");
 		setColor(lightred, black);
+		tMap[*aY + _y][*aX + _x] = 'a';
 		gotoxy(*aX + _x, *aY + _y);
 		printf("M");
 		*aX += _x;
@@ -395,9 +399,11 @@ int move(char(*tMap)[40], int* pX, int* pY, int*mX,int *mY, int* aX, int* aY, in
 	}
 	if (mapObject3 == '0')
 	{
+		tMap[*bY][*bX] = '0';
 		gotoxy(*bX, *bY);
 		printf(" ");
 		setColor(lightred, black);
+		tMap[*bY + _y][*bX + _x] = 'b';
 		gotoxy(*bX + _x, *bY + _y);
 		printf("M");
 		*bX += _x;
@@ -405,9 +411,11 @@ int move(char(*tMap)[40], int* pX, int* pY, int*mX,int *mY, int* aX, int* aY, in
 	}
 	if (mapObject4 == '0')
 	{
+		tMap[*cY][*cX] = '0';
 		gotoxy(*cX, *cY);
 		printf(" ");
 		setColor(lightred, black);
+		tMap[*cY + _y][*cX + _x] = 'c';
 		gotoxy(*cX + _x, *cY + _y);
 		printf("M");
 		*cX += _x;
