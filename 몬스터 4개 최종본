@@ -602,11 +602,13 @@ void infoDraw(void)
 	printf("\n\n");
 	printf("                        [ 게임설명 ]\n\n");
 	printf("             몬스터들을 피하거나 폭탄으로 물리쳐\n");
-	printf("                     열쇠를 얻어 탈출해라\n\n");
+	printf("                    열쇠를 얻어 탈출해라\n\n");
+	printf("              아이템 : 목숨 +1 OR 목숨 -1 \n");
+	printf("                *너의 운을 아이템에 맡겨봐*\n\n");
 	printf("                        [ 조작법 ]\n\n");
-	printf("                     이동: W, A, S, D\n\n");
-	printf("                     폭탄설치: I, J, K, L\n\n");
-	printf("                     선택: 스페이스바\n\n\n");
+	printf("                     이동: W, A, S, D\n");
+	printf("                     폭탄설치: I, J, K, L\n");
+	printf("                     선택: 스페이스바\n\n");
 	printf("             개발자: 6조(강재윤, 이유진, 이인구)\n\n");
 	printf("         스페이스바를 누르면 메인화면으로 이동합니다.");
 
